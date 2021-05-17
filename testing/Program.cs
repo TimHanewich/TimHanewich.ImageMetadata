@@ -1,4 +1,5 @@
 ﻿using System;
+using TimHanewich.ImageMetadata;
 
 namespace testing
 {
@@ -6,7 +7,9 @@ namespace testing
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            
+            
+
         }
     }
 }
