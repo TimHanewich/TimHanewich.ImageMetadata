@@ -42,6 +42,10 @@ namespace TimHanewich.ImageMetadata
                 {
                     LongitudeReference = pi.Value[0];
                 }
+                else if (pi.Id == 6) //Altitude
+                {
+                    ToReturn.AltitudeMeters = ToReturn.GetAltitudeFromExif(pi);
+                }
             }
 
             //Save the data if it exists
@@ -82,6 +86,15 @@ namespace TimHanewich.ImageMetadata
             float coord = degrees + (minutes / 60f) + (seconds / 3600f);
 
             return coord;
+        }
+
+        private float GetAltitudeFromExif(PropertyItem pi)
+        {
+            //Byte lenght of value should be 8 (two uint's divided by each other)
+            uint val1 = BitConverter.ToUInt32(pi.Value, 0);
+            uint val2 = BitConverter.ToUInt32(pi.Value, 4);
+            float val = Convert.ToSingle(val1) / Convert.ToSingle(val2);
+            return val;
         }
 
     }
