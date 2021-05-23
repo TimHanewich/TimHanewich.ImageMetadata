@@ -2,11 +2,13 @@ using System;
 using System.IO;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Collections.Generic;
 
 namespace TimHanewich.ImageMetadata
 {
     public class ImageMetadata
     {
+        public DateTime? TakenAt {get; set;}
         public float? Latitude {get; set;}
         public float? Longitude {get; set;}
         public float? AltitudeMeters {get; set;}
@@ -45,6 +47,21 @@ namespace TimHanewich.ImageMetadata
                 else if (pi.Id == 6) //Altitude
                 {
                     ToReturn.AltitudeMeters = ToReturn.GetAltitudeFromExif(pi);
+                }
+                else if (pi.Id == 36867)
+                {
+                    string val = System.Text.Encoding.ASCII.GetString(pi.Value);
+                    List<string> Splitter = new List<string>();
+                    Splitter.Add(":");
+                    Splitter.Add(" ");
+                    string[] parts = val.Split(Splitter.ToArray(), StringSplitOptions.None);
+                    int year = Convert.ToInt32(parts[0]);
+                    int month = Convert.ToInt32(parts[1]);
+                    int day = Convert.ToInt32(parts[2]);
+                    int hour = Convert.ToInt32(parts[3]);
+                    int minute = Convert.ToInt32(parts[4]);
+                    int second = Convert.ToInt32(parts[5]);
+                    ToReturn.TakenAt = new DateTime(year, month, day, hour, minute, second);
                 }
             }
 
